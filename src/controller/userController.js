@@ -3,13 +3,14 @@ const userServices = require('../services/userServices');
 const { jwtSign } = require('../services/generalServices');
 
 const { SECRET, COOKIE_NAME } = require('../config/constants');
-
+const { isLogged, isGuest } = require('../middleware/authMiddleware');
 const renderHome = (req, res) => {
-  res.render('user/index');
+  //const user = res.locals.user;
+  res.render('user/index', { user: req.user });
 };
 
 const renderLogin = (req, res) => {
-  res.render('user/login');
+  res.render('user/login', { user: req.user });
 };
 
 const logoutUser = (req, res) => {
@@ -32,7 +33,7 @@ const loginUser = async (req, res) => {
   }
 };
 const renderRegister = (req, res) => {
-  res.render('user/register');
+  res.render('user/register', { user: req.user });
 };
 
 const registerUser = async (req, res) => {
@@ -49,11 +50,11 @@ const registerUser = async (req, res) => {
     res.send(error.message);
   }
 };
-router.get('/', renderHome);
-router.get('/login', renderLogin);
-router.get('/register', renderRegister);
-router.get('/logout', logoutUser);
-router.post('/login', loginUser);
-router.post('/register', registerUser);
+router.get('/', isLogged, renderHome);
+router.get('/login', isGuest, renderLogin);
+router.get('/register', isGuest, renderRegister);
+router.get('/logout', isLogged, logoutUser);
+router.post('/login', isGuest, loginUser);
+router.post('/register', isGuest, registerUser);
 
 module.exports = router;

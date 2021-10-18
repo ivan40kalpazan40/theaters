@@ -11,3 +11,17 @@ exports.auth = function (req, res, next) {
     next();
   });
 };
+
+exports.isLogged = function (req, res, next) {
+  if (req.user) {
+    return next();
+  }
+  res.redirect('/user/login');
+};
+
+exports.isGuest = function (req, res, next) {
+  if (!req.user) {
+    return next();
+  }
+  res.redirect('/user');
+};
