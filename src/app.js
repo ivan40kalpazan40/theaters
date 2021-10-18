@@ -5,7 +5,9 @@ const hbsInit = require('./config/handlebars');
 const initDb = require('./config/db');
 const { connectionString, PORT } = require('./config/constants');
 const app = express();
+
 app.use(express.static(path.resolve(__dirname, './public')));
+
 hbsInit(app);
 app.use(router);
 
