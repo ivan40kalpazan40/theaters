@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const renderHome = (req, res) => {
-  res.render(req.user ? 'index-logged' : 'index');
+  res.render('index');
 };
 
 router.get('/', renderHome);

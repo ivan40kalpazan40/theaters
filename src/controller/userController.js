@@ -4,8 +4,16 @@ const { jwtSign } = require('../services/generalServices');
 
 const { SECRET, COOKIE_NAME } = require('../config/constants');
 
+const renderHome = (req, res) => {
+  res.render('user/index');
+};
+
 const renderLogin = (req, res) => {
   res.render('user/login');
+};
+
+const logoutUser = (req, res) => {
+  res.clearCookie(COOKIE_NAME).redirect('/');
 };
 
 const loginUser = async (req, res) => {
@@ -17,7 +25,7 @@ const loginUser = async (req, res) => {
       SECRET,
       { expiresIn: '1d' }
     );
-    res.cookie(COOKIE_NAME, token).redirect('/');
+    res.cookie(COOKIE_NAME, token).redirect('/user');
   } catch (error) {
     console.log(error.message);
     res.redirect('/user/login');
@@ -41,9 +49,11 @@ const registerUser = async (req, res) => {
     res.send(error.message);
   }
 };
+router.get('/', renderHome);
 router.get('/login', renderLogin);
-router.post('/login', loginUser);
 router.get('/register', renderRegister);
+router.get('/logout', logoutUser);
+router.post('/login', loginUser);
 router.post('/register', registerUser);
 
 module.exports = router;
