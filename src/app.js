@@ -7,7 +7,7 @@ const { connectionString, PORT } = require('./config/constants');
 const app = express();
 
 app.use(express.static(path.resolve(__dirname, './public')));
-
+app.use(express.urlencoded({ extended: false }));
 hbsInit(app);
 app.use(router);
 
