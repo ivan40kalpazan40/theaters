@@ -27,7 +27,6 @@ const register = async (username, password, repeatPassword) => {
   if (!repeatPassValidator(password, repeatPassword)) {
     throw new Error('Please enter valid password!');
   }
-  // hash pass here
   const hashed = await hashPassword(password);
   return await User.create({ username, password: hashed });
 };
