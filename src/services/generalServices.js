@@ -17,3 +17,4 @@ exports.compareHashed = (password, hashedPassword) => {
 };
 
 exports.jwtSign = util.promisify(jwt.sign);
+exports.jwtVerify = util.promisify(jwt.verify);
