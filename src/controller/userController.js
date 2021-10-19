@@ -8,7 +8,10 @@ const { isLogged, isGuest } = require('../middleware/authMiddleware');
 const renderHome = async (req, res) => {
   try {
     const plays = await playServices.getAll();
-    let allPlays = plays.map((x) => x._doc);
+    let allPlays = plays
+      .map((x) => x._doc)
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .slice(0, 5);
     res.render('user/index', { user: req.user, plays: allPlays });
   } catch (error) {
     console.log(error.message);
