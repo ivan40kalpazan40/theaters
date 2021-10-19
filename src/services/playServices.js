@@ -7,6 +7,7 @@ const getAll = async () => {
 };
 
 const getOne = async (id) => await Play.findOne({ _id: id });
+const deleteOne = async (id) => await Play.findOneAndRemove({ _id: id });
 
-const playServices = { create, getAll, getOne };
+const playServices = { create, getAll, getOne, deleteOne };
 module.exports = playServices;

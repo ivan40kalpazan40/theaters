@@ -35,8 +35,24 @@ const renderDetails = async (req, res) => {
   }
 };
 
+const deletePlay = async (req, res) => {
+  const playId = req.params.id;
+  try {
+    await playServices.deleteOne(playId);
+    res.redirect('/user');
+  } catch (error) {
+    console.log(error.message);
+    res.send(error.message);
+  }
+};
+const renderEdit = (req, res) => {
+  console.log('edit');
+};
+
 router.get('/create', isLogged, renderCreate);
 router.get('/:id/details', isLogged, renderDetails);
+router.get('/:id/delete', isLogged, deletePlay);
+router.get('/:id/edit', isLogged, renderEdit);
 router.post('/create', isLogged, createPlay);
 
 module.exports = router;

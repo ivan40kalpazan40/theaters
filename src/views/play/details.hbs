@@ -13,8 +13,8 @@
       <p>{{play.description}}</p>
       <div class='buttons'>
         {{#if isAuthor}}
-          <a class='btn delete' href=''>Delete</a>
-          <a class='btn edit' href=''>Edit</a>
+          <a class='btn delete' href='/play/{{play._id}}/delete'>Delete</a>
+          <a class='btn edit' href='/play/{{play._id}}/edit'>Edit</a>
         {{else}}
           <span class='liked'>You have already liked this play!</span>
           <a class='btn like' href=''>Like</a>
