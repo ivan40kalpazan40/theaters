@@ -45,8 +45,15 @@ const deletePlay = async (req, res) => {
     res.send(error.message);
   }
 };
-const renderEdit = (req, res) => {
-  console.log('edit');
+const renderEdit = async (req, res) => {
+  const playId = req.params.id;
+  try {
+    const play = await playServices.getOne(playId);
+    res.render('play/edit', { user: req.user, play: play._doc });
+  } catch (error) {
+    console.log(error.message);
+    res.send(error.message);
+  }
 };
 
 router.get('/create', isLogged, renderCreate);
