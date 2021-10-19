@@ -15,7 +15,7 @@ const playSchema = new mongoose.Schema({
     },
   },
   isPublic: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now(), required },
+  createdAt: { type: Date, default: Date.now(), required: true },
   usersLiked: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
 });
 
