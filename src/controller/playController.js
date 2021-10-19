@@ -56,10 +56,28 @@ const renderEdit = async (req, res) => {
   }
 };
 
+const editPlay = async (req, res) => {
+  const playId = req.params.id;
+  const { title, description, imageUrl, isPublic } = req.body;
+  try {
+    await playServices.editOne(playId, {
+      title,
+      description,
+      imageUrl,
+      isPublic: Boolean(isPublic),
+    });
+    res.redirect('/user');
+  } catch (error) {
+    console.log(error.message);
+    res.send(error.message);
+  }
+};
+
 router.get('/create', isLogged, renderCreate);
 router.get('/:id/details', isLogged, renderDetails);
 router.get('/:id/delete', isLogged, deletePlay);
 router.get('/:id/edit', isLogged, renderEdit);
 router.post('/create', isLogged, createPlay);
+router.post('/:id/edit', isLogged, editPlay);
 
 module.exports = router;
