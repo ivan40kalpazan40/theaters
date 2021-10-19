@@ -1,12 +1,13 @@
 const router = require('express').Router();
 const userServices = require('../services/userServices');
+const playServices = require('../services/playServices');
 const { jwtSign } = require('../services/generalServices');
 
 const { SECRET, COOKIE_NAME } = require('../config/constants');
 const { isLogged, isGuest } = require('../middleware/authMiddleware');
-const renderHome = (req, res) => {
-  //const user = res.locals.user;
-  res.render('user/index', { user: req.user });
+const renderHome = async (req, res) => {
+  const plays = await playServices.getAll();
+  res.render('user/index', { user: req.user, plays });
 };
 
 const renderLogin = (req, res) => {
