@@ -6,8 +6,14 @@ const { jwtSign } = require('../services/generalServices');
 const { SECRET, COOKIE_NAME } = require('../config/constants');
 const { isLogged, isGuest } = require('../middleware/authMiddleware');
 const renderHome = async (req, res) => {
-  const plays = await playServices.getAll();
-  res.render('user/index', { user: req.user, plays });
+  try {
+    const plays = await playServices.getAll();
+    let allPlays = plays.map((x) => x._doc);
+    res.render('user/index', { user: req.user, plays: allPlays });
+  } catch (error) {
+    console.log(error.message);
+    res.send(error.message);
+  }
 };
 
 const renderLogin = (req, res) => {

@@ -2,7 +2,7 @@ const Play = require('../models/Play');
 
 const create = async (play) => await Play.create(play);
 const getAll = async () => {
-  const plays = await Play.find({}).lean();
+  const plays = await Play.find({});
   return plays;
 };
 

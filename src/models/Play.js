@@ -19,5 +19,11 @@ const playSchema = new mongoose.Schema({
   usersLiked: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
 });
 
+playSchema.method('getLikes', function () {
+  const likes = this.usersLiked.length;
+  const output = likes == 1 ? `${likes} like` : `${likes} likes`;
+  return output;
+});
+
 const Play = mongoose.model('Play', playSchema);
 module.exports = Play;
