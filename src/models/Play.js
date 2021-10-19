@@ -14,6 +14,7 @@ const playSchema = new mongoose.Schema({
       message: 'Must be a valid URL.',
     },
   },
+  author: { type: mongoose.Types.ObjectId, ref: 'User' },
   isPublic: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now(), required: true },
   usersLiked: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
@@ -23,6 +24,9 @@ playSchema.method('getLikes', function () {
   const likes = this.usersLiked.length;
   const output = likes == 1 ? `${likes} like` : `${likes} likes`;
   return output;
+});
+playSchema.method('isAuthor', function (userId) {
+  return this.author == userId;
 });
 
 const Play = mongoose.model('Play', playSchema);

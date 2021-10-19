@@ -14,6 +14,7 @@ const createPlay = async (req, res) => {
       description,
       imageUrl,
       isPublic: Boolean(isPublic),
+      author: req.user,
     });
     res.redirect('/user');
   } catch (error) {
@@ -22,7 +23,20 @@ const createPlay = async (req, res) => {
   }
 };
 
+const renderDetails = async (req, res) => {
+  const playId = req.params.id;
+  try {
+    const play = await playServices.getOne(playId);
+    const isAuthor = await play.isAuthor(req.user._id);
+    res.render('play/details', { user: req.user, isAuthor, play: play._doc });
+  } catch (error) {
+    console.log(error.message);
+    res.send(error.message);
+  }
+};
+
 router.get('/create', isLogged, renderCreate);
+router.get('/:id/details', isLogged, renderDetails);
 router.post('/create', isLogged, createPlay);
 
 module.exports = router;

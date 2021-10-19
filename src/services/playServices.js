@@ -6,5 +6,7 @@ const getAll = async () => {
   return plays;
 };
 
-const playServices = { create, getAll };
+const getOne = async (id) => await Play.findOne({ _id: id });
+
+const playServices = { create, getAll, getOne };
 module.exports = playServices;
