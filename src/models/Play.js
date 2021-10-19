@@ -29,5 +29,14 @@ playSchema.method('isAuthor', function (userId) {
   return this.author == userId;
 });
 
+playSchema.method('youLiked', function (userId) {
+  return this.usersLiked.includes(userId);
+});
+
+playSchema.method('like', function (user) {
+  this.usersLiked.push(user);
+  this.save();
+});
+
 const Play = mongoose.model('Play', playSchema);
 module.exports = Play;

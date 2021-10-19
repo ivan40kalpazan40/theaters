@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const playServices = require('../services/playServices');
+const userServices = require('../services/userServices');
 const { isLogged } = require('../middleware/authMiddleware');
 
 const renderCreate = (req, res) => {
@@ -28,7 +29,13 @@ const renderDetails = async (req, res) => {
   try {
     const play = await playServices.getOne(playId);
     const isAuthor = await play.isAuthor(req.user._id);
-    res.render('play/details', { user: req.user, isAuthor, play: play._doc });
+    const youLiked = await play.youLiked(req.user._id);
+    res.render('play/details', {
+      user: req.user,
+      isAuthor,
+      youLiked,
+      play: play._doc,
+    });
   } catch (error) {
     console.log(error.message);
     res.send(error.message);
@@ -73,10 +80,25 @@ const editPlay = async (req, res) => {
   }
 };
 
+const likePlay = async (req, res) => {
+  const playId = req.params.id;
+  try {
+    const play = await playServices.getOne(playId);
+    const user = await userServices.getUser(req.user.username);
+    await play.like(user);
+    await user.addLikedPlay(playId);
+    res.redirect(`/play/${playId}/details`);
+  } catch (error) {
+    console.log(error.message);
+    res.send(error.message);
+  }
+};
+
 router.get('/create', isLogged, renderCreate);
 router.get('/:id/details', isLogged, renderDetails);
 router.get('/:id/delete', isLogged, deletePlay);
 router.get('/:id/edit', isLogged, renderEdit);
+router.get('/:id/like', isLogged, likePlay);
 router.post('/create', isLogged, createPlay);
 router.post('/:id/edit', isLogged, editPlay);
 

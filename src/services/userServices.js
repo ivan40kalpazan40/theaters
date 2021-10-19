@@ -31,5 +31,5 @@ const register = async (username, password, repeatPassword) => {
   return await User.create({ username, password: hashed });
 };
 
-const userServices = { register, login };
+const userServices = { register, login, getUser };
 module.exports = userServices;
