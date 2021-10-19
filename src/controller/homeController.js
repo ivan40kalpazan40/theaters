@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const playServices = require('../services/playServices');
+const { errorHandler } = require('../services/generalServices');
 const { isGuest } = require('../middleware/authMiddleware');
 
 const renderHome = async (req, res) => {
@@ -11,8 +12,7 @@ const renderHome = async (req, res) => {
       .slice(0, 3);
     res.render('index', { user: req.user, plays: allPlays });
   } catch (error) {
-    console.log(error.message);
-    res.send(error.message);
+    errorHandler(error, req, res, './index');
   }
 };
 

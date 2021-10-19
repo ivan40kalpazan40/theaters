@@ -21,11 +21,11 @@
         {{/if}}
       </ul>
     </nav>
-
-    <section class='notifications error'>
-      <p>Message...</p>
-    </section>
-
+    {{#if error}}
+      <section class='notifications error'>
+        <p>{{error}}</p>
+      </section>
+    {{/if}}
     {{{body}}}
     <footer>
       <div>© 2020

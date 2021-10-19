@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const userServices = require('../services/userServices');
 const playServices = require('../services/playServices');
+const { errorHandler } = require('../services/generalServices');
 const { jwtSign } = require('../services/generalServices');
 
 const { SECRET, COOKIE_NAME } = require('../config/constants');
@@ -15,6 +16,7 @@ const renderHome = async (req, res) => {
     res.render('user/index', { user: req.user, plays: allPlays });
   } catch (error) {
     console.log(error.message);
+    res.locals.error = error.message;
     res.send(error.message);
   }
 };
@@ -38,8 +40,7 @@ const loginUser = async (req, res) => {
     );
     res.cookie(COOKIE_NAME, token).redirect('/user');
   } catch (error) {
-    console.log(error.message);
-    res.redirect('/user/login');
+    errorHandler(error, req, res, './user/login');
   }
 };
 const renderRegister = (req, res) => {
@@ -56,8 +57,7 @@ const registerUser = async (req, res) => {
     );
     res.redirect('/user/login');
   } catch (error) {
-    console.log(error.message);
-    res.send(error.message);
+    errorHandler(error, req, res, './user/register');
   }
 };
 router.get('/', isLogged, renderHome);

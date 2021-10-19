@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const playServices = require('../services/playServices');
 const userServices = require('../services/userServices');
+const { errorHandler } = require('../services/generalServices');
 const { isLogged } = require('../middleware/authMiddleware');
 
 const renderCreate = (req, res) => {
@@ -19,8 +20,7 @@ const createPlay = async (req, res) => {
     });
     res.redirect('/user');
   } catch (error) {
-    console.log(error.message);
-    res.redirect('/user');
+    errorHandler(error, req, res, './user/index');
   }
 };
 
@@ -38,6 +38,7 @@ const renderDetails = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
+    res.locals.error = error.message;
     res.send(error.message);
   }
 };
@@ -49,6 +50,7 @@ const deletePlay = async (req, res) => {
     res.redirect('/user');
   } catch (error) {
     console.log(error.message);
+    res.locals.error = error.message;
     res.send(error.message);
   }
 };
@@ -59,6 +61,7 @@ const renderEdit = async (req, res) => {
     res.render('play/edit', { user: req.user, play: play._doc });
   } catch (error) {
     console.log(error.message);
+    res.locals.error = error.message;
     res.send(error.message);
   }
 };
@@ -76,6 +79,7 @@ const editPlay = async (req, res) => {
     res.redirect('/user');
   } catch (error) {
     console.log(error.message);
+    res.locals.error = error.message;
     res.send(error.message);
   }
 };
@@ -90,6 +94,7 @@ const likePlay = async (req, res) => {
     res.redirect(`/play/${playId}/details`);
   } catch (error) {
     console.log(error.message);
+    res.locals.error = error.message;
     res.send(error.message);
   }
 };

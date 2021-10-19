@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: { type: String, required: [true, 'You must enter password'] },
   liked: [{ type: mongoose.Types.ObjectId, ref: 'Play' }],
 });
 
